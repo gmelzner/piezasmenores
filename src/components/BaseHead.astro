@@ -61,6 +61,15 @@ const { title, description, image = FallbackImage } = Astro.props;
 <!-- Google Search Console -->
 <meta name="google-site-verification" content="UO5gOd-UxrtuQUAZ3NFmodtYb-Vq-Kvyryoq2aYa528" />
 
+<!-- Google Analytics GA4 -->
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-0GWDXTDTBG"></script>
+<script is:inline>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-0GWDXTDTBG');
+</script>
+
 <!-- Additional SEO -->
 <meta name="robots" content="index, follow" />
 <meta name="language" content="Spanish" />
