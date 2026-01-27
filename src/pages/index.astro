@@ -49,7 +49,9 @@ const posts = (await getCollection('blog')).sort(
 				<div class="newsletter-content">
 					<h2>Suscribite al newsletter</h2>
 					<p>Un artículo por semana sobre estrategia, negocios y pensamiento de largo plazo. Sin spam.</p>
-					<form class="newsletter-form" action="#" method="POST">
+					<form class="newsletter-form" action="https://formspree.io/f/mvzalogy" method="POST">
+						<input type="hidden" name="_subject" value="Nuevo suscriptor - Piezas Menores" />
+						<input type="hidden" name="_next" value="https://piezasmenores.blog/?suscrito=1" />
 						<input
 							type="email"
 							name="email"
@@ -59,7 +61,7 @@ const posts = (await getCollection('blog')).sort(
 						/>
 						<button type="submit">Suscribirme</button>
 					</form>
-					<p class="newsletter-note">Próximamente activo. Dejá tu email para ser el primero.</p>
+					<p class="newsletter-note">Sin spam. Podés desuscribirte cuando quieras.</p>
 				</div>
 			</section>
 
@@ -74,7 +76,7 @@ const posts = (await getCollection('blog')).sort(
 									<div class="post-image">
 										<Image
 											src={post.data.heroImage}
-											alt=""
+											alt={post.data.title}
 											width={400}
 											height={200}
 										/>

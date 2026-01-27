@@ -2,7 +2,7 @@
 title: 'Pensar en variantes: la habilidad más transferible del ajedrez'
 description: 'Por qué calcular líneas en ajedrez te entrena para tomar mejores decisiones en la vida.'
 pubDate: 'Jan 25 2026'
-heroImage: '../../assets/blog-placeholder-2.jpg'
+heroImage: '../../assets/pensar-en-variantes.jpg'
 ---
 
 Una de las primeras cosas que aprendés cuando mejorás en ajedrez es a **calcular variantes**. Es decir, pensar "si yo juego esto, él responde aquello, entonces yo hago esto otro...".

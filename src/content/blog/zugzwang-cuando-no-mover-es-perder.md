@@ -2,7 +2,7 @@
 title: 'Zugzwang: cuando no mover es perder'
 description: 'Un concepto de ajedrez que explica muchas crisis empresariales y políticas.'
 pubDate: 'Jan 24 2026'
-heroImage: '../../assets/blog-placeholder-3.jpg'
+heroImage: '../../assets/zugzwang-cuando-no-mover-es-perder.jpg'
 ---
 
 **Zugzwang** es una palabra alemana que significa "obligación de mover". En ajedrez, describe una situación donde cualquier movimiento que hagas empeora tu posición, pero estás obligado a jugar porque es tu turno.

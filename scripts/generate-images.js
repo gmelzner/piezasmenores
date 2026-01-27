@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -6,6 +5,8 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR = path.join(__dirname, "../src/content/blog");
 const ASSETS_DIR = path.join(__dirname, "../src/assets");
+
+const KIE_API_BASE = "https://api.kie.ai/api/v1";
 
 // Estilo base para todas las imágenes
 const STYLE_PROMPT = `
@@ -15,45 +16,109 @@ Color palette: Black, white, and subtle warm grays with occasional gold accents.
 Include subtle chess elements (board patterns, piece silhouettes) integrated elegantly.
 Professional, sophisticated look suitable for a strategy/business blog.
 No text in the image.
-Aspect ratio: 16:9, landscape orientation.
 `;
 
-async function generateImage(title, description) {
-  const apiKey = process.env.GOOGLE_API_KEY;
-
+function getApiKey() {
+  const apiKey = process.env.KIE_API_KEY;
   if (!apiKey) {
-    console.error("❌ Falta GOOGLE_API_KEY en las variables de entorno");
-    console.log("   Ejecutá: export GOOGLE_API_KEY='tu-api-key'");
+    console.error("Falta KIE_API_KEY en las variables de entorno");
+    console.log("   Ejecuta: export KIE_API_KEY='tu-api-key'");
+    console.log("   Obtene tu key en: https://kie.ai/api-key");
     process.exit(1);
   }
+  return apiKey;
+}
 
-  const genAI = new GoogleGenerativeAI(apiKey);
-
-  // Usar Imagen 3 para generación de imágenes
-  const model = genAI.getGenerativeModel({ model: "imagen-3.0-generate-002" });
-
-  const prompt = `${STYLE_PROMPT}\n\nTopic: "${title}"\nContext: ${description}`;
-
-  console.log(`🎨 Generando imagen para: "${title}"`);
-
-  try {
-    const result = await model.generateImages({
+async function submitImageTask(prompt, apiKey) {
+  const response = await fetch(`${KIE_API_BASE}/flux/kontext/generate`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
       prompt,
-      config: {
-        numberOfImages: 1,
-        aspectRatio: "16:9",
-      },
-    });
+      aspectRatio: "16:9",
+      outputFormat: "jpeg",
+      model: "flux-kontext-pro",
+      enableTranslation: true,
+    }),
+  });
 
-    if (result.images && result.images.length > 0) {
-      return result.images[0];
+  const data = await response.json();
+
+  if (data.code !== 200) {
+    throw new Error(`Error al crear tarea: ${data.msg || JSON.stringify(data)}`);
+  }
+
+  return data.data.taskId;
+}
+
+async function pollForResult(taskId, apiKey) {
+  const maxAttempts = 60; // 5 minutos max (60 * 5s)
+  let attempts = 0;
+
+  while (attempts < maxAttempts) {
+    const response = await fetch(
+      `${KIE_API_BASE}/flux/kontext/record-info?taskId=${taskId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.code !== 200) {
+      throw new Error(`Error al consultar tarea: ${data.msg}`);
     }
 
-    throw new Error("No se generó ninguna imagen");
-  } catch (error) {
-    console.error(`❌ Error generando imagen: ${error.message}`);
-    return null;
+    const { successFlag } = data.data;
+
+    if (successFlag === 1) {
+      // Exito
+      return data.data.response.resultImageUrl;
+    } else if (successFlag === 2 || successFlag === 3) {
+      // Fallo
+      throw new Error(
+        `Fallo la generacion: ${data.data.errorMessage || "error desconocido"}`
+      );
+    }
+
+    // successFlag === 0 -> sigue generando
+    process.stdout.write(".");
+    attempts++;
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   }
+
+  throw new Error("Timeout: la imagen tardo mas de 5 minutos");
+}
+
+async function downloadImage(url, outputPath) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Error descargando imagen: ${response.status}`);
+  }
+  const buffer = Buffer.from(await response.arrayBuffer());
+  fs.writeFileSync(outputPath, buffer);
+}
+
+async function generateImage(title, description, apiKey) {
+  const prompt = `${STYLE_PROMPT}\nTopic: "${title}"\nContext: ${description}`;
+
+  console.log(`\nGenerando imagen para: "${title}"`);
+
+  // 1. Enviar tarea
+  const taskId = await submitImageTask(prompt, apiKey);
+  console.log(`  Tarea creada: ${taskId}`);
+  process.stdout.write("  Esperando");
+
+  // 2. Esperar resultado
+  const imageUrl = await pollForResult(taskId, apiKey);
+  console.log("\n  Imagen lista");
+
+  return imageUrl;
 }
 
 function extractFrontmatter(content) {
@@ -68,7 +133,6 @@ function extractFrontmatter(content) {
     if (colonIndex > 0) {
       const key = line.slice(0, colonIndex).trim();
       let value = line.slice(colonIndex + 1).trim();
-      // Remover comillas
       value = value.replace(/^['"]|['"]$/g, "");
       frontmatter[key] = value;
     }
@@ -79,17 +143,19 @@ function extractFrontmatter(content) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const specificPost = args[0]; // Nombre del post específico (opcional)
+  const specificPost = args.find((a) => !a.startsWith("--"));
+  const force = args.includes("--force");
 
-  console.log("🚀 Generador de imágenes para Piezas Menores\n");
+  const apiKey = getApiKey();
 
-  // Leer todos los posts
+  console.log("Generador de imagenes - Piezas Menores (Kie.ai / Flux Kontext)\n");
+
   const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".md"));
+  let generated = 0;
 
   for (const file of files) {
     const slug = file.replace(".md", "");
 
-    // Si se especificó un post, solo procesar ese
     if (specificPost && slug !== specificPost) continue;
 
     const filePath = path.join(BLOG_DIR, file);
@@ -97,38 +163,43 @@ async function main() {
     const frontmatter = extractFrontmatter(content);
 
     if (!frontmatter) {
-      console.log(`⚠️  Skipping ${file} (no frontmatter)`);
+      console.log(`Saltando ${file} (sin frontmatter)`);
       continue;
     }
 
     const outputFile = path.join(ASSETS_DIR, `${slug}.jpg`);
 
-    // Verificar si ya existe
-    if (fs.existsSync(outputFile) && !args.includes("--force")) {
-      console.log(`⏭️  ${slug}: ya existe imagen, saltando (usá --force para regenerar)`);
+    if (fs.existsSync(outputFile) && !force) {
+      console.log(`Saltando ${slug}: ya existe (usa --force para regenerar)`);
       continue;
     }
 
-    const image = await generateImage(frontmatter.title, frontmatter.description);
+    try {
+      const imageUrl = await generateImage(
+        frontmatter.title,
+        frontmatter.description,
+        apiKey
+      );
 
-    if (image) {
-      // Guardar la imagen
-      const imageData = Buffer.from(image.imageBytes, "base64");
-      fs.writeFileSync(outputFile, imageData);
-      console.log(`✅ Guardada: ${outputFile}\n`);
+      // 3. Descargar imagen
+      await downloadImage(imageUrl, outputFile);
+      console.log(`  Guardada: src/assets/${slug}.jpg`);
 
-      // Actualizar el frontmatter del post
+      // 4. Actualizar frontmatter
       const newHeroImage = `../../assets/${slug}.jpg`;
       const updatedContent = content.replace(
         /heroImage: ['"].*['"]/,
         `heroImage: '${newHeroImage}'`
       );
       fs.writeFileSync(filePath, updatedContent);
-      console.log(`📝 Actualizado heroImage en ${file}\n`);
+      console.log(`  Actualizado heroImage en ${file}`);
+      generated++;
+    } catch (error) {
+      console.error(`  Error: ${error.message}`);
     }
   }
 
-  console.log("✨ Proceso completado");
+  console.log(`\nListo. ${generated} imagen(es) generada(s).`);
 }
 
 main().catch(console.error);

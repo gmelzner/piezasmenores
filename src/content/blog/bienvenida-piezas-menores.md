@@ -2,7 +2,7 @@
 title: 'Bienvenidos a Piezas Menores'
 description: 'Por qué decidí empezar este blog y qué vas a encontrar acá.'
 pubDate: 'Jan 26 2026'
-heroImage: '../../assets/blog-placeholder-1.jpg'
+heroImage: '../../assets/bienvenida-piezas-menores.jpg'
 ---
 
 Este es el primer post de Piezas Menores, un blog donde voy a explorar las conexiones entre el ajedrez, los negocios y la toma de decisiones.
