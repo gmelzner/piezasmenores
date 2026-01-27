@@ -24,7 +24,7 @@ const posts = (await getCollection('blog')).sort(
 			<section class="hero">
 				<div class="hero-content">
 					<span class="hero-badge">Estrategia • Negocios • Ajedrez</span>
-					<h1>Las ideas que otros subestiman</h1>
+					<h1>Las ideas<br/>que otros<br/>subestiman</h1>
 					<p class="hero-description">
 						Un blog sobre los detalles "menores" que ganan partidas:
 						pensamiento estratégico, inversiones, y decisiones de largo plazo
@@ -37,7 +37,10 @@ const posts = (await getCollection('blog')).sort(
 				</div>
 				<div class="hero-visual">
 					<div class="chess-pattern"></div>
-					<span class="hero-piece">♞</span>
+					<div class="hero-pieces">
+						<span class="piece-knight">♞</span>
+						<span class="piece-bishop">♝</span>
+					</div>
 				</div>
 			</section>
 
@@ -196,11 +199,34 @@ const posts = (await getCollection('blog')).sort(
 		border-radius: 12px;
 	}
 
-	.hero-piece {
-		font-size: 8rem;
+	.hero-pieces {
 		position: relative;
 		z-index: 1;
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.piece-knight,
+	.piece-bishop {
+		font-size: 6rem;
 		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+		transition: transform 0.3s;
+	}
+
+	.piece-knight {
+		transform: rotate(-10deg);
+	}
+
+	.piece-bishop {
+		transform: rotate(10deg);
+	}
+
+	.hero-visual:hover .piece-knight {
+		transform: rotate(-5deg) translateY(-5px);
+	}
+
+	.hero-visual:hover .piece-bishop {
+		transform: rotate(5deg) translateY(-5px);
 	}
 
 	/* Newsletter Section */
@@ -369,8 +395,9 @@ const posts = (await getCollection('blog')).sort(
 			min-height: 200px;
 		}
 
-		.hero-piece {
-			font-size: 5rem;
+		.piece-knight,
+		.piece-bishop {
+			font-size: 4rem;
 		}
 
 		.chess-pattern {
