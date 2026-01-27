@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+import { Image } from 'astro:assets';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -19,29 +20,74 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main>
+			<!-- Hero Section -->
 			<section class="hero">
-				<h1>♞ Piezas Menores</h1>
-				<p class="tagline">{SITE_DESCRIPTION}</p>
-				<p>
-					En ajedrez, las piezas menores son el alfil y el caballo. No tienen el poder de la dama ni el alcance de la torre,
-					pero en las manos correctas, ganan partidas. Este blog es sobre eso: las ideas "menores" que otros subestiman,
-					los detalles que acumulan ventaja, y la mentalidad estratégica aplicada a los negocios, las inversiones y la vida.
-				</p>
+				<div class="hero-content">
+					<span class="hero-badge">Estrategia • Negocios • Ajedrez</span>
+					<h1>Las ideas que otros subestiman</h1>
+					<p class="hero-description">
+						Un blog sobre los detalles "menores" que ganan partidas:
+						pensamiento estratégico, inversiones, y decisiones de largo plazo
+						vistas con lente de ajedrecista.
+					</p>
+					<div class="hero-cta">
+						<a href="/blog" class="btn-primary">Leer artículos</a>
+						<a href="/about" class="btn-secondary">Sobre el autor</a>
+					</div>
+				</div>
+				<div class="hero-visual">
+					<div class="chess-pattern"></div>
+					<span class="hero-piece">♞</span>
+				</div>
 			</section>
 
+			<!-- Newsletter Section -->
+			<section class="newsletter">
+				<div class="newsletter-content">
+					<h2>Suscribite al newsletter</h2>
+					<p>Un artículo por semana sobre estrategia, negocios y pensamiento de largo plazo. Sin spam.</p>
+					<form class="newsletter-form" action="#" method="POST">
+						<input
+							type="email"
+							name="email"
+							placeholder="tu@email.com"
+							required
+							aria-label="Email"
+						/>
+						<button type="submit">Suscribirme</button>
+					</form>
+					<p class="newsletter-note">Próximamente activo. Dejá tu email para ser el primero.</p>
+				</div>
+			</section>
+
+			<!-- Recent Posts -->
 			<section class="recent-posts">
 				<h2>Últimos artículos</h2>
-				<ul>
+				<div class="posts-grid">
 					{posts.map((post) => (
-						<li>
+						<article class="post-card">
 							<a href={`/blog/${post.id}/`}>
-								<h3>{post.data.title}</h3>
-								<p class="date"><FormattedDate date={post.data.pubDate} /></p>
-								<p>{post.data.description}</p>
+								{post.data.heroImage && (
+									<div class="post-image">
+										<Image
+											src={post.data.heroImage}
+											alt=""
+											width={400}
+											height={200}
+										/>
+									</div>
+								)}
+								<div class="post-content">
+									<time class="post-date">
+										<FormattedDate date={post.data.pubDate} />
+									</time>
+									<h3>{post.data.title}</h3>
+									<p>{post.data.description}</p>
+								</div>
 							</a>
-						</li>
+						</article>
 					))}
-				</ul>
+				</div>
 				<p class="view-all">
 					<a href="/blog">Ver todos los artículos →</a>
 				</p>
@@ -52,56 +98,292 @@ const posts = (await getCollection('blog')).sort(
 </html>
 
 <style>
+	/* Hero Section */
 	.hero {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem;
+		align-items: center;
+		padding: 3rem 0;
 		margin-bottom: 3rem;
-		padding-bottom: 2rem;
-		border-bottom: 1px solid rgb(var(--gray-light));
+		min-height: 400px;
 	}
+
+	.hero-badge {
+		display: inline-block;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: rgb(var(--gray));
+		border: 1px solid rgb(var(--gray-light));
+		padding: 0.25rem 0.75rem;
+		border-radius: 999px;
+		margin-bottom: 1rem;
+	}
+
 	.hero h1 {
-		font-size: 2.5rem;
+		font-size: 2.75rem;
+		line-height: 1.1;
+		margin-bottom: 1rem;
+		background: linear-gradient(135deg, rgb(var(--black)) 0%, rgb(var(--gray-dark)) 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.hero-description {
+		font-size: 1.125rem;
+		color: rgb(var(--gray));
+		line-height: 1.6;
+		margin-bottom: 1.5rem;
+	}
+
+	.hero-cta {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.btn-primary {
+		background: rgb(var(--black));
+		color: white;
+		padding: 0.75rem 1.5rem;
+		border-radius: 8px;
+		text-decoration: none;
+		font-weight: 600;
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	.btn-secondary {
+		color: rgb(var(--gray-dark));
+		padding: 0.75rem 1.5rem;
+		text-decoration: none;
+		font-weight: 500;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		transition: border-color 0.2s;
+	}
+
+	.btn-secondary:hover {
+		border-color: rgb(var(--gray));
+	}
+
+	.hero-visual {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 300px;
+	}
+
+	.chess-pattern {
+		position: absolute;
+		width: 200px;
+		height: 200px;
+		background:
+			linear-gradient(45deg, rgb(var(--gray-light)) 25%, transparent 25%),
+			linear-gradient(-45deg, rgb(var(--gray-light)) 25%, transparent 25%),
+			linear-gradient(45deg, transparent 75%, rgb(var(--gray-light)) 75%),
+			linear-gradient(-45deg, transparent 75%, rgb(var(--gray-light)) 75%);
+		background-size: 40px 40px;
+		background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+		opacity: 0.5;
+		border-radius: 12px;
+	}
+
+	.hero-piece {
+		font-size: 8rem;
+		position: relative;
+		z-index: 1;
+		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+	}
+
+	/* Newsletter Section */
+	.newsletter {
+		background: linear-gradient(135deg, rgb(var(--gray-light)) 0%, #f8f8f8 100%);
+		border-radius: 16px;
+		padding: 2.5rem;
+		margin-bottom: 3rem;
+		text-align: center;
+	}
+
+	.newsletter h2 {
+		font-size: 1.5rem;
 		margin-bottom: 0.5rem;
 	}
-	.tagline {
-		font-size: 1.25rem;
+
+	.newsletter > p {
 		color: rgb(var(--gray));
 		margin-bottom: 1.5rem;
+	}
+
+	.newsletter-form {
+		display: flex;
+		gap: 0.5rem;
+		max-width: 450px;
+		margin: 0 auto;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.newsletter-form input {
+		flex: 1;
+		min-width: 200px;
+		padding: 0.75rem 1rem;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		font-size: 1rem;
+	}
+
+	.newsletter-form input:focus {
+		outline: none;
+		border-color: rgb(var(--gray));
+	}
+
+	.newsletter-form button {
+		background: rgb(var(--black));
+		color: white;
+		padding: 0.75rem 1.5rem;
+		border: none;
+		border-radius: 8px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: transform 0.2s;
+	}
+
+	.newsletter-form button:hover {
+		transform: translateY(-2px);
+	}
+
+	.newsletter-note {
+		font-size: 0.875rem;
+		color: rgb(var(--gray));
+		margin-top: 1rem;
 		font-style: italic;
 	}
+
+	/* Recent Posts */
 	.recent-posts h2 {
 		margin-bottom: 1.5rem;
+		font-size: 1.5rem;
 	}
-	.recent-posts ul {
-		list-style: none;
-		padding: 0;
+
+	.posts-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+		margin-bottom: 2rem;
 	}
-	.recent-posts li {
-		margin-bottom: 1.5rem;
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid rgb(var(--gray-light));
+
+	.post-card {
+		background: white;
+		border-radius: 12px;
+		overflow: hidden;
+		border: 1px solid rgb(var(--gray-light));
+		transition: transform 0.2s, box-shadow 0.2s;
 	}
-	.recent-posts li:last-child {
-		border-bottom: none;
+
+	.post-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 	}
-	.recent-posts a {
+
+	.post-card a {
 		text-decoration: none;
 		color: inherit;
 	}
-	.recent-posts a:hover h3 {
-		color: var(--accent);
+
+	.post-image {
+		aspect-ratio: 2/1;
+		overflow: hidden;
 	}
-	.recent-posts h3 {
-		margin-bottom: 0.25rem;
-		font-size: 1.25rem;
+
+	.post-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.3s;
 	}
-	.recent-posts .date {
-		font-size: 0.875rem;
+
+	.post-card:hover .post-image img {
+		transform: scale(1.05);
+	}
+
+	.post-content {
+		padding: 1.25rem;
+	}
+
+	.post-date {
+		font-size: 0.75rem;
 		color: rgb(var(--gray));
-		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
+
+	.post-content h3 {
+		font-size: 1.125rem;
+		margin: 0.5rem 0;
+		line-height: 1.3;
+	}
+
+	.post-content p {
+		font-size: 0.9rem;
+		color: rgb(var(--gray));
+		line-height: 1.5;
+	}
+
 	.view-all {
-		margin-top: 1rem;
+		text-align: center;
+		margin-top: 1.5rem;
 	}
+
 	.view-all a {
-		font-weight: bold;
+		font-weight: 600;
+		color: rgb(var(--black));
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.hero {
+			grid-template-columns: 1fr;
+			text-align: center;
+			padding: 2rem 0;
+		}
+
+		.hero h1 {
+			font-size: 2rem;
+		}
+
+		.hero-cta {
+			justify-content: center;
+		}
+
+		.hero-visual {
+			order: -1;
+			min-height: 200px;
+		}
+
+		.hero-piece {
+			font-size: 5rem;
+		}
+
+		.chess-pattern {
+			width: 120px;
+			height: 120px;
+		}
+
+		.newsletter {
+			padding: 1.5rem;
+		}
+
+		.posts-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
