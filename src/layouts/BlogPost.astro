@@ -11,11 +11,28 @@ type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 const shareUrl = encodeURIComponent(Astro.url.toString());
 const shareText = encodeURIComponent(title);
+
+const jsonLd = JSON.stringify({
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description,
+	datePublished: pubDate.toISOString(),
+	...(updatedDate && { dateModified: updatedDate.toISOString() }),
+	...(heroImage && { image: new URL(heroImage.src, Astro.url).toString() }),
+	url: Astro.url.toString(),
+	publisher: {
+		'@type': 'Organization',
+		name: 'Piezas Menores',
+		url: Astro.site?.toString(),
+	},
+});
 ---
 
 <html lang="es">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} image={heroImage} pubDate={pubDate} updatedDate={updatedDate} />
+		<script type="application/ld+json" set:html={jsonLd} />
 		<style>
 			main {
 				width: calc(100% - 2em);
