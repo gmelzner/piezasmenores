@@ -21,6 +21,11 @@ const jsonLd = JSON.stringify({
 	...(updatedDate && { dateModified: updatedDate.toISOString() }),
 	...(heroImage && { image: new URL(heroImage.src, Astro.url).toString() }),
 	url: Astro.url.toString(),
+	author: {
+		'@type': 'Person',
+		name: 'Piezas Menores',
+		url: Astro.site?.toString() + 'about/',
+	},
 	publisher: {
 		'@type': 'Organization',
 		name: 'Piezas Menores',

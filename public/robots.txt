@@ -1,0 +1,7 @@
+# Robots.txt for piezasmenores.blog
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://piezasmenores.blog/sitemap-index.xml
