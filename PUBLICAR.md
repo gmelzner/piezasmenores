@@ -59,7 +59,33 @@ Opciones:
 
 El script actualiza automáticamente el campo `heroImage` en el frontmatter.
 
-## 4. Deploy
+## 4. Generar thread para X/Twitter
+
+```bash
+npm run generate-thread nombre-del-post
+```
+
+Esto genera un archivo en `threads/nombre-del-post.md` con:
+- Hilo de 5 tweets listo para copiar y pegar
+- Tweet corto alternativo (sin thread)
+- Hashtags sugeridos
+- Tips de timing y engagement
+
+**Opcional:** Si configurás `ANTHROPIC_API_KEY`, el script usa IA para generar el thread automáticamente. Si no, genera un template básico.
+
+```bash
+export ANTHROPIC_API_KEY='tu-api-key'
+npm run generate-thread nombre-del-post
+```
+
+### Tips para publicar en X
+
+1. **No publiques solo el link** - Los links tienen menos alcance
+2. **Timing:** 8-10am o 7-9pm (Argentina), evitar fines de semana para política
+3. **Hashtags:** En respuesta al thread, no en los tweets principales
+4. **Engagement:** Respondé a los comentarios para aumentar alcance
+
+## 5. Deploy
 
 ```bash
 git add .
