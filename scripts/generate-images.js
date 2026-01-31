@@ -187,10 +187,20 @@ async function main() {
 
       // 4. Actualizar frontmatter
       const newHeroImage = `../../assets/${slug}.jpg`;
-      const updatedContent = content.replace(
-        /heroImage: ['"].*['"]/,
-        `heroImage: '${newHeroImage}'`
-      );
+      let updatedContent;
+      if (/heroImage:/.test(content)) {
+        // Reemplazar heroImage existente
+        updatedContent = content.replace(
+          /heroImage: ['"].*['"]/,
+          `heroImage: '${newHeroImage}'`
+        );
+      } else {
+        // Insertar heroImage antes del cierre del frontmatter
+        updatedContent = content.replace(
+          /\n---/,
+          `\nheroImage: '${newHeroImage}'\n---`
+        );
+      }
       fs.writeFileSync(filePath, updatedContent);
       console.log(`  Actualizado heroImage en ${file}`);
       generated++;
