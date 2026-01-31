@@ -2,6 +2,7 @@
 title: 'La partida no se gana en la apertura'
 description: 'Casi nadie está construyendo nada con IA. Confundimos conocer herramientas con saber hacer cosas, y eso tiene un costo enorme.'
 pubDate: 'Jan 31 2026'
+heroImage: '../../assets/la-partida-no-se-gana-en-la-apertura.jpg'
 ---
 
 Hay una forma muy específica de perder el tiempo que se siente como productividad.
