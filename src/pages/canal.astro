@@ -1,0 +1,113 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { REDES, SERIES, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead
+			title={`El canal — ${SITE_TITLE}`}
+			description="Qué es Piezas Menores, por qué se llama así y cómo se hace cada pieza."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="contenedor">
+			<article>
+				<p class="rotulo entra">El canal</p>
+				<h1 class="entra" style="--orden:1">Ideas grandes, piezas menores.</h1>
+
+				<p class="entrada entra" style="--orden:2">
+					Piezas Menores es un canal de video vertical sobre libros, historia, tecnología e inteligencia artificial.
+					Cada pieza dura alrededor de un minuto y defiende una tesis: no resume, analiza.
+				</p>
+
+				<h2>Por qué se llama así</h2>
+				<p>
+					En ajedrez, las piezas menores son el alfil y el caballo. Se llaman «menores» no porque sean débiles, sino
+					porque tienen menos alcance que las torres o la dama. Bien coordinadas, deciden partidas.
+				</p>
+				<p>
+					El canal trabaja con esa idea: decisiones, libros e inventos que parecían menores y terminaron dando forma
+					al mundo en que vivimos. Por eso cada pieza cierra con «la jugada», el concepto de ajedrez que la resume.
+				</p>
+
+				<h2>Las series</h2>
+				<dl>
+					{SERIES.map((serie) => (
+						<>
+							<dt>{serie.nombre}</dt>
+							<dd>{serie.bajada}</dd>
+						</>
+					))}
+				</dl>
+
+				<h2>Cómo se hace</h2>
+				<p>
+					El guion y la investigación son propios, y ningún dato histórico se publica sin una fuente que lo respalde.
+					La narración, la música y las ilustraciones se generan con inteligencia artificial; el armado y la animación
+					se hacen pieza por pieza.
+				</p>
+
+				<p class="cierre">
+					Las piezas salen en{' '}
+					{REDES.map((red, indice) => (
+						<>
+							{indice > 0 && ' y '}
+							<a href={red.url} target="_blank" rel="noopener">{red.nombre}</a>
+						</>
+					))}.
+				</p>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	article {
+		max-width: 680px;
+		padding-block: clamp(2.5rem, 6vw, 4.5rem);
+	}
+	.rotulo {
+		color: var(--sepia);
+		margin-bottom: 1rem;
+	}
+	h1 {
+		font-weight: 900;
+		font-size: clamp(2.5rem, 6vw, 4.4rem);
+		margin-bottom: 1.8rem;
+	}
+	.entrada {
+		font-size: 1.35rem;
+		line-height: 1.5;
+	}
+	h2 {
+		font-size: 1.9rem;
+		font-style: italic;
+		margin: 3rem 0 0.9rem;
+		padding-top: 1.2rem;
+		border-top: 1px solid var(--tinta);
+	}
+	dl {
+		margin: 0;
+		display: grid;
+		gap: 1rem;
+	}
+	dt {
+		font-family: var(--titulos);
+		font-weight: 700;
+		font-size: 1.25rem;
+	}
+	dd {
+		margin: 0.1rem 0 0;
+		color: var(--sepia);
+	}
+	.cierre {
+		margin-top: 3rem;
+		font-style: italic;
+	}
+</style>

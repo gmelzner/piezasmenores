@@ -1,43 +1,69 @@
 ---
-import { SITE_TITLE } from '../consts';
-const today = new Date();
+import { CONTACTO, REDES, SITE_TITLE } from '../consts';
 ---
 
-<footer>
-	<p>&copy; {today.getFullYear()} {SITE_TITLE}. Todos los derechos reservados.</p>
-	<p class="contact">
-		<a href="mailto:hola@piezasmenores.blog">hola@piezasmenores.blog</a>
-	</p>
-	<div class="social-links">
-		<a href="https://x.com/piezasmenores" target="_blank">
-			<span class="sr-only">Seguir en X</span>
-			<svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24"
-				><path
-					fill="currentColor"
-					d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-				></path></svg
-			>
-		</a>
+<footer class="pie">
+	<div class="contenedor columnas">
+		<div>
+			<p class="firma">♞♝ {SITE_TITLE}</p>
+			<p class="aviso">
+				Guion e investigación propios. Narración, música e ilustraciones generadas con inteligencia artificial.
+			</p>
+		</div>
+		<ul class="enlaces rotulo">
+			{REDES.map((red) => (
+				<li><a href={red.url} target="_blank" rel="noopener">{red.nombre}</a></li>
+			))}
+			<li><a href={`mailto:${CONTACTO}`}>{CONTACTO}</a></li>
+		</ul>
 	</div>
 </footer>
+
 <style>
-	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
-		text-align: center;
+	.pie {
+		margin-top: clamp(4rem, 9vw, 7rem);
+		background: var(--tinta);
+		color: var(--papel);
+		padding: 3rem 0 3.5rem;
+		border-top: 6px solid var(--dorado);
 	}
-	.social-links {
+	.columnas {
 		display: flex;
-		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
+		justify-content: space-between;
+		gap: 2rem 4rem;
+		flex-wrap: wrap;
 	}
-	.social-links a {
+	.firma {
+		font-family: var(--titulos);
+		font-weight: 900;
+		font-size: 1.6rem;
+		margin: 0 0 0.6rem;
+	}
+	.aviso {
+		max-width: 34ch;
+		font-size: 1rem;
+		font-style: italic;
+		color: color-mix(in srgb, var(--papel) 72%, transparent);
+		margin: 0;
+	}
+	.enlaces {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.75rem;
+		align-content: start;
+	}
+	.enlaces a {
 		text-decoration: none;
-		color: rgb(var(--gray));
+		border-bottom: 2px solid var(--atardecer);
+		padding-bottom: 0.15rem;
 	}
-	.social-links a:hover {
-		color: rgb(var(--gray-dark));
+	.enlaces a:hover {
+		border-bottom-color: var(--holograma);
+		color: var(--holograma);
+	}
+	.enlaces a:focus-visible {
+		outline-color: var(--holograma);
 	}
 </style>

@@ -1,67 +1,81 @@
 ---
-import { SITE_TITLE } from '../consts';
-import HeaderLink from './HeaderLink.astro';
+import { REDES, SITE_TITLE } from '../consts';
+
+const enlaces = [
+	{ href: '/#piezas', texto: 'Piezas' },
+	{ href: '/#series', texto: 'Series' },
+	{ href: '/canal', texto: 'El canal' },
+];
+const canal = REDES[0];
 ---
 
-<header>
-	<nav>
-		<h2><a href="/">♞ {SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink href="/">Inicio</HeaderLink>
-			<HeaderLink href="/blog">Artículos</HeaderLink>
-			<HeaderLink href="/about">Sobre mí</HeaderLink>
-		</div>
-		<div class="social-links">
-			<a href="https://x.com/piezasmenores" target="_blank">
-				<span class="sr-only">Seguir en X</span>
-				<svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24"
-					><path
-						fill="currentColor"
-						d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-					></path></svg
-				>
-			</a>
-		</div>
-	</nav>
+<header class="cabecera">
+	<div class="contenedor fila">
+		<a class="marca" href="/">
+			<span class="piezas" aria-hidden="true">♞♝</span>
+			<span class="nombre">{SITE_TITLE}</span>
+		</a>
+		<nav aria-label="Principal">
+			{enlaces.map((enlace) => <a class="rotulo" href={enlace.href}>{enlace.texto}</a>)}
+			<a class="rotulo destacado" href={canal.url} target="_blank" rel="noopener">Ver en {canal.nombre}</a>
+		</nav>
+	</div>
+	<hr class="filete" />
 </header>
-<style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
 
-	h2 a,
-	h2 a.active {
+<style>
+	.cabecera {
+		padding-top: 1.1rem;
+	}
+	.fila {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem 2rem;
+		flex-wrap: wrap;
+		padding-bottom: 0.9rem;
+	}
+	.marca {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.55rem;
 		text-decoration: none;
+	}
+	.piezas {
+		font-size: 1.5rem;
+		letter-spacing: -0.12em;
+		color: var(--atardecer);
+	}
+	.nombre {
+		font-family: var(--titulos);
+		font-weight: 900;
+		font-size: 1.55rem;
+		letter-spacing: -0.02em;
 	}
 	nav {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		gap: 0.4rem 1.4rem;
+		flex-wrap: wrap;
 	}
 	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
 		text-decoration: none;
+		padding: 0.35rem 0;
+		border-bottom: 2px solid transparent;
 	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
+	nav a:hover {
+		border-bottom-color: var(--atardecer);
 	}
-	.social-links,
-	.social-links a {
-		display: flex;
+	nav a.destacado {
+		background: var(--tinta);
+		color: var(--papel);
+		padding: 0.5rem 0.8rem;
+		border: 0;
+		box-shadow: 4px 4px 0 var(--dorado);
+		transition: box-shadow 0.15s, transform 0.15s;
 	}
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
-		}
+	nav a.destacado:hover {
+		box-shadow: 6px 6px 0 var(--holograma);
+		transform: translate(-2px, -2px);
 	}
 </style>

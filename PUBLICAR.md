@@ -1,96 +1,29 @@
-# Publicar un nuevo artículo en Piezas Menores
+# Publicar en Piezas Menores (la web del canal)
 
-## 1. Crear el archivo
+La web muestra las piezas que ya se subieron al canal. La fuente de verdad es la
+carpeta del canal (`proyectos/activos/piezas-menores`); acá no se carga nada a mano.
 
-Crear un archivo `.md` en `src/content/blog/` con el nombre en formato slug:
-- Todo minúscula, sin acentos, palabras separadas por guiones
-- Ejemplo: `el-gambito-de-dama-en-los-negocios.md`
+## Sumar una pieza nueva
 
-## 2. Formato del artículo
+1. En el canal, mover la pieza a `publicar/subidos/NN-slug/` (con `publicacion.md` y `portada.jpg`).
+2. En este repo:
 
-```markdown
----
-title: 'Título del artículo'
-description: 'Descripción corta (1-2 oraciones) para SEO y listados.'
-pubDate: 'Jan 27 2026'
-heroImage: '../../assets/nombre-del-archivo.jpg'
----
+   ```sh
+   npm run sincronizar   # lee publicar/subidos y regenera src/content/piezas + src/assets/piezas
+   npm run build         # verifica que compile
+   ```
 
-Contenido en Markdown.
+3. Commit y push a `main`: Vercel despliega solo.
 
-**Negritas** para énfasis. *Cursivas* para citas o matices.
+Si la carpeta del canal está en otro lado: `PIEZAS_CANAL=/ruta/al/canal npm run sincronizar`.
 
-## Subtítulos con ##
+## Qué lee de cada pieza
 
-Listas con guiones:
-- Punto 1
-- Punto 2
+Del `publicacion.md`: la línea `**Título:**` de YouTube Shorts y `Serie:` del encabezado.
+La portada se achica a 720 px de ancho. Los emojis del título no pasan a la web.
 
-Listas numeradas:
-1. Paso 1
-2. Paso 2
+## Dónde se cambia cada cosa
 
----
-
-*Cierre en cursiva con reflexión final.*
-```
-
-### Campos del frontmatter
-
-| Campo | Requerido | Formato | Ejemplo |
-|-------|-----------|---------|---------|
-| `title` | Si | String entre comillas | `'Zugzwang: cuando no mover es perder'` |
-| `description` | Si | String entre comillas, 1-2 oraciones | `'Un concepto de ajedrez que explica muchas crisis.'` |
-| `pubDate` | Si | Fecha en inglés | `'Jan 27 2026'` |
-| `heroImage` | No | Path relativo a assets | `'../../assets/mi-post.jpg'` |
-| `updatedDate` | No | Fecha en inglés | `'Feb 01 2026'` |
-
-## 3. Generar la imagen
-
-```bash
-export KIE_API_KEY='tu-api-key'
-npm run generate-images nombre-del-post
-```
-
-Opciones:
-- `npm run generate-images` - genera imágenes para TODOS los posts sin imagen
-- `npm run generate-images mi-post` - genera solo para ese post
-- `npm run generate-images mi-post --force` - regenera aunque ya exista
-
-El script actualiza automáticamente el campo `heroImage` en el frontmatter.
-
-## 4. Generar thread para X/Twitter
-
-```bash
-npm run generate-thread nombre-del-post
-```
-
-Esto genera un archivo en `threads/nombre-del-post.md` con:
-- Hilo de 5 tweets listo para copiar y pegar
-- Tweet corto alternativo (sin thread)
-- Hashtags sugeridos
-- Tips de timing y engagement
-
-**Opcional:** Si configurás `ANTHROPIC_API_KEY`, el script usa IA para generar el thread automáticamente. Si no, genera un template básico.
-
-```bash
-export ANTHROPIC_API_KEY='tu-api-key'
-npm run generate-thread nombre-del-post
-```
-
-### Tips para publicar en X
-
-1. **No publiques solo el link** - Los links tienen menos alcance
-2. **Timing:** 8-10am o 7-9pm (Argentina), evitar fines de semana para política
-3. **Hashtags:** En respuesta al thread, no en los tweets principales
-4. **Engagement:** Respondé a los comentarios para aumentar alcance
-
-## 5. Deploy
-
-```bash
-git add .
-git commit -m "Nuevo post: título del artículo"
-git push
-```
-
-Vercel auto-deploya al hacer push a main.
+- Redes, contacto y texto de las series: `src/consts.ts`
+- Colores y tipografías: `src/styles/global.css` (misma paleta que `studio/src/comunes/estilo.tsx` del canal)
+- Portada: `src/pages/index.astro` · Página del canal: `src/pages/canal.astro`
