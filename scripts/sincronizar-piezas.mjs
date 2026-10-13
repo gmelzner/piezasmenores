@@ -16,6 +16,10 @@
 //   publicar/subidos/NN-slug/portada.jpg      cover
 //   pilotos/NN-slug/short-01/narracion*.txt   narration (latest version)
 //   pilotos/NN-slug/short-01/guion-short.md   "La jugada" and the verification table
+//   pilotos/NN-slug/nota.md                   the long-form note, only once `verificada: true`
+//
+// `npm run sincronizar -- --borradores` also brings unverified notes, marked as
+// drafts, to preview them locally. Never commit the result of that run.
 import { execFileSync } from 'node:child_process';
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -28,6 +32,8 @@ const canal = path.resolve(raiz, process.env.PIEZAS_CANAL ?? '../../activos/piez
 const subidos = path.join(canal, 'publicar', 'subidos');
 const destinoContenido = path.join(raiz, 'src', 'content', 'piezas');
 const destinoPortadas = path.join(raiz, 'src', 'assets', 'piezas');
+const destinoNotas = path.join(raiz, 'src', 'content', 'notas');
+const conBorradores = process.argv.includes('--borradores');
 const ANCHO_PORTADA = 720;
 
 if (!existsSync(subidos)) {
@@ -89,13 +95,36 @@ function leerDatosVerificados(guion) {
 	return datos;
 }
 
-// Both folders are generated: start clean so a piece that stops being public disappears.
-for (const destino of [destinoContenido, destinoPortadas]) {
-	await rm(destino, { recursive: true, force: true });
-	await mkdir(destino, { recursive: true });
+/**
+ * A note is published only when Gus has verified it: `verificada: true` in its
+ * frontmatter and no [VERIFICAR] mark left in the text. HTML comments are
+ * working notes for the verification and never leave the channel.
+ */
+async function leerNota(archivo) {
+	if (!existsSync(archivo)) return null;
+	const texto = await readFile(archivo, 'utf8');
+	const [, cabecera, cuerpoCrudo] = texto.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/) ?? [];
+	if (!cabecera) return null;
+	const titulo = cabecera.match(/^titulo:\s*"?(.*?)"?\s*$/m)?.[1];
+	const verificada = /^verificada:\s*true\s*$/m.test(cabecera) && !cuerpoCrudo.includes('[VERIFICAR');
+	const cuerpo = cuerpoCrudo.replace(/<!--[\s\S]*?-->/g, '').trim();
+	return titulo ? { titulo, verificada, cuerpo } : null;
 }
 
+// These folders are generated. Whatever this run does not write is removed at
+// the end, so a piece that stops being public disappears. Files are removed one
+// by one: recreating the folders leaves the Astro dev server with stale entries.
+const destinos = [destinoContenido, destinoPortadas, destinoNotas];
+for (const destino of destinos) await mkdir(destino, { recursive: true });
+const escritos = new Set();
+const escribir = async (archivo, contenido) => {
+	await writeFile(archivo, contenido);
+	escritos.add(archivo);
+};
+
 let escritas = 0;
+const notas = [];
+const notasSinVerificar = [];
 for (const { slug: carpeta, numero, titulo, serie, youtube } of publicadas) {
 	const archivoPublicacion = path.join(subidos, carpeta, 'publicacion.md');
 	const archivoPortada = path.join(subidos, carpeta, 'portada.jpg');
@@ -115,6 +144,7 @@ for (const { slug: carpeta, numero, titulo, serie, youtube } of publicadas) {
 		.resize({ width: ANCHO_PORTADA })
 		.jpeg({ quality: 82, mozjpeg: true })
 		.toFile(path.join(destinoPortadas, `${carpeta}.jpg`));
+	escritos.add(path.join(destinoPortadas, `${carpeta}.jpg`));
 
 	const frontmatter = [
 		'---',
@@ -132,11 +162,30 @@ for (const { slug: carpeta, numero, titulo, serie, youtube } of publicadas) {
 	];
 	// The body is the list of verified facts; Markdown keeps the source links.
 	const cuerpo = datos.map(({ dato, fuente }) => `- ${dato} — *${fuente}*`);
-	await writeFile(path.join(destinoContenido, `${carpeta}.md`), [...frontmatter, ...cuerpo, ''].join('\n'));
+	await escribir(path.join(destinoContenido, `${carpeta}.md`), [...frontmatter, ...cuerpo, ''].join('\n'));
 	escritas++;
+
+	const nota = await leerNota(path.join(canal, 'pilotos', carpeta, 'nota.md'));
+	if (nota && (nota.verificada || conBorradores)) {
+		const cabecera = ['---', `titulo: ${JSON.stringify(nota.titulo)}`, `borrador: ${!nota.verificada}`, '---', ''];
+		await escribir(path.join(destinoNotas, `${carpeta}.md`), [...cabecera, nota.cuerpo, ''].join('\n'));
+		notas.push(`${carpeta}${nota.verificada ? '' : ' (borrador)'}`);
+	} else if (nota) {
+		notasSinVerificar.push(carpeta);
+	}
 }
 
 console.log(`${escritas} piezas publicadas sincronizadas desde ${canal}`);
+for (const destino of destinos) {
+	for (const nombre of await readdir(destino)) {
+		const archivo = path.join(destino, nombre);
+		if (!escritos.has(archivo)) await rm(archivo);
+	}
+}
+
+if (notas.length > 0) console.log(`Notas: ${notas.join(', ')}`);
+if (notasSinVerificar.length > 0) console.log(`Notas sin verificar (no se publican): ${notasSinVerificar.join(', ')}`);
+if (conBorradores) console.log('OJO: corrida con --borradores, solo para ver en local. No commitear.');
 const pendientes = estado.piezas.filter((pieza) => pieza.etapa === 'subida' || pieza.etapa === 'programada');
 if (pendientes.length > 0) {
 	console.log(`Todavía no salen en la web: ${pendientes.map((pieza) => `${pieza.slug} (${pieza.etapa})`).join(', ')}`);

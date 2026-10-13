@@ -47,3 +47,24 @@ después de ` → ` en la columna Dato es una nota interna y tampoco se publica.
 - Redes, contacto y texto de las series: `src/consts.ts`
 - Colores y tipografías: `src/styles/global.css` (misma paleta que `studio/src/comunes/estilo.tsx` del canal)
 - Portada: `src/pages/index.astro` · Página del canal: `src/pages/canal.astro` · Página de cada pieza: `src/pages/piezas/[slug].astro`
+
+## Notas largas ("La historia completa")
+
+Cada pieza puede tener una nota investigativa. Vive en el canal, en `pilotos/NN-slug/nota.md`:
+
+```markdown
+---
+titulo: "Título de la nota"
+verificada: false
+---
+
+Texto en Markdown, con subtítulos `##` y links a las fuentes.
+
+<!-- Los comentarios HTML son apuntes para la verificación y nunca se publican. -->
+```
+
+- **Solo se publica con `verificada: true` y sin ninguna marca `[VERIFICAR]`** en el texto. Mientras
+  tanto `npm run sincronizar` la ignora y avisa.
+- Para leer un borrador en local: `npm run sincronizar -- --borradores` y abrir la pieza en
+  `localhost:4321`. Sale rotulada como borrador. **No commitear esa corrida**: antes de commitear,
+  volver a correr `npm run sincronizar` sin la opción.

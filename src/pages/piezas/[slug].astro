@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
@@ -17,6 +17,8 @@ const { pieza, anterior, siguiente } = Astro.props;
 const { numero, titulo, serie, portada, bajada, youtube, jugada, narracion } = pieza.data;
 const { Content } = await render(pieza);
 const tieneDatos = Boolean(pieza.body?.trim());
+const nota = await getEntry('notas', pieza.id);
+const Nota = nota ? (await render(nota)).Content : null;
 const [gancho, ...resto] = narracion;
 ---
 
@@ -64,6 +66,14 @@ const [gancho, ...resto] = narracion;
 						)}
 					</div>
 				</div>
+
+				{nota && Nota && (
+					<section class="nota-larga">
+						<p class="rotulo">La historia completa{nota.data.borrador && ' · borrador sin verificar'}</p>
+						<h2>{nota.data.titulo}</h2>
+						<div class="prosa"><Nota /></div>
+					</section>
+				)}
 
 				{tieneDatos && (
 					<section class="datos">
@@ -177,6 +187,38 @@ const [gancho, ...resto] = narracion;
 	}
 	.jugada .definicion::first-letter {
 		text-transform: uppercase;
+	}
+
+	.nota-larga {
+		margin-top: clamp(3rem, 7vw, 5rem);
+		padding-top: 1.6rem;
+		border-top: 3px solid var(--tinta);
+		max-width: 68ch;
+	}
+	.nota-larga > h2 {
+		font-weight: 900;
+		font-size: clamp(2rem, 4.4vw, 3.2rem);
+		line-height: 1.05;
+		margin-bottom: 1.6rem;
+	}
+	.prosa :global(p) {
+		font-size: 1.22rem;
+		line-height: 1.65;
+		margin-bottom: 1.2em;
+	}
+	.prosa :global(p:first-of-type)::first-letter {
+		font-family: var(--titulos);
+		font-weight: 900;
+		font-size: 3.6em;
+		float: left;
+		line-height: 0.82;
+		padding: 0.08em 0.1em 0 0;
+		color: var(--atardecer);
+	}
+	.prosa :global(h2) {
+		font-style: italic;
+		font-size: 1.7rem;
+		margin: 2.4rem 0 0.8rem;
 	}
 
 	.datos {
