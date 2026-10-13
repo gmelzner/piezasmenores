@@ -10,7 +10,7 @@ export const REDES = [
 	{ nombre: 'X', url: 'https://x.com/piezasmenores' },
 ];
 
-export const CONTACTO = 'hola@piezasmenores.blog';
+export const CONTACTO = 'hola@atlasresuelve.online';
 
 // Series in the order they appear on the site. Names match the "Serie:" line
 // of each publicacion.md in the channel.
