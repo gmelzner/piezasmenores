@@ -73,6 +73,7 @@ const series = SERIES.map((serie) => ({
 				<ul class="grilla">
 					{piezas.map((pieza, indice) => (
 						<li class="pieza entra" style={`--orden:${Math.min(indice, 8)}`}>
+							<a href={`/piezas/${pieza.id}/`}>
 							<Image
 								src={pieza.data.portada}
 								alt={`Portada de la pieza ${pieza.data.numero}: ${pieza.data.titulo}`}
@@ -83,6 +84,7 @@ const series = SERIES.map((serie) => ({
 								N.º {String(pieza.data.numero).padStart(2, '0')} · {pieza.data.serie}
 							</p>
 							<h3>{pieza.data.titulo}</h3>
+							</a>
 						</li>
 					))}
 				</ul>
@@ -231,6 +233,10 @@ const series = SERIES.map((serie) => ({
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
 		gap: 2.6rem 2rem;
+	}
+	.pieza a {
+		display: block;
+		text-decoration: none;
 	}
 	.pieza :global(img) {
 		width: 100%;

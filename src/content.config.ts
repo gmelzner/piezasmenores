@@ -10,6 +10,10 @@ const piezas = defineCollection({
 			titulo: z.string(),
 			serie: z.string(),
 			portada: image(),
+			bajada: z.string(),
+			youtube: z.string().optional(),
+			jugada: z.object({ concepto: z.string(), definicion: z.string() }).optional(),
+			narracion: z.array(z.string()),
 		}),
 });
 
