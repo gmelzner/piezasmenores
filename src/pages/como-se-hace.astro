@@ -1,0 +1,393 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import ingeniero from '../assets/proceso/kodak-ingeniero.jpg';
+import reunion from '../assets/proceso/kodak-reunion.jpg';
+import rollos from '../assets/proceso/kodak-rollos.jpg';
+import celulares from '../assets/proceso/kodak-celulares.jpg';
+import { CONTACTO, SITE_TITLE } from '../consts';
+
+const publicadas = (await getCollection('piezas')).length;
+const ilustraciones = [
+	{ src: ingeniero, alt: 'Grabado: un ingeniero sostiene una cámara del tamaño de una tostadora' },
+	{ src: reunion, alt: 'Grabado: ejecutivos alrededor de una mesa miran la cámara' },
+	{ src: rollos, alt: 'Grabado: una montaña de cajas de rollos amarillos' },
+	{ src: celulares, alt: 'Grabado: una multitud levanta teléfonos para sacar fotos' },
+];
+const reparto = [
+	{ quien: 'Una persona', que: ['Elige el tema y la tesis', 'Contrasta cada dato con su fuente', 'Aprueba el guion y el video', 'Publica'] },
+	{ quien: 'Modelos de IA', que: ['Redactan el guion a partir de la tesis', 'Buscan y cruzan fuentes', 'Narran, ilustran y componen la música'] },
+	{ quien: 'Código', que: ['Arma el video cuadro por cuadro', 'Normaliza el audio y renderiza', 'Genera esta web desde las mismas carpetas'] },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead
+			title={`Cómo se hace — ${SITE_TITLE}`}
+			description="El proceso completo de una pieza de Piezas Menores: de la tesis al video publicado, con qué hace una persona, qué hace la IA y qué hace el código."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="contenedor">
+			<header class="apertura">
+				<p class="rotulo entra">Cómo se hace</p>
+				<h1 class="entra" style="--orden:1">Una pieza de un minuto, <em>paso por paso.</em></h1>
+				<p class="bajada entra" style="--orden:2">
+					Piezas Menores es un canal chico hecho con un sistema: una persona decide y verifica, modelos de
+					inteligencia artificial redactan, narran e ilustran, y el código arma y publica. Esto es lo que pasa entre
+					la idea y el video, siguiendo una pieza real: la de Kodak.
+				</p>
+				<ul class="cifras entra" style="--orden:3">
+					<li><strong>{publicadas}</strong> piezas publicadas</li>
+					<li><strong>105–120</strong> palabras por guion</li>
+					<li><strong>~70 s</strong> por ilustración, en una notebook</li>
+					<li><strong>2</strong> aprobaciones humanas por pieza</li>
+				</ul>
+			</header>
+
+			<ol class="pasos">
+				<li>
+					<h2>La tesis</h2>
+					<p>
+						Cada pieza defiende una idea, no resume un tema. La de Kodak no es «Kodak quebró», sino «Kodak no quebró
+						por no ver lo digital: lo inventó ella». Si la tesis no se puede discutir, no hay pieza.
+					</p>
+					<p>Las tesis salen de un plan por series, para que el canal tenga un hilo y no una lista de curiosidades.</p>
+				</li>
+
+				<li>
+					<h2>El guion</h2>
+					<p>
+						Entre 105 y 120 palabras: lo que entra en un minuto con la placa final. Un modelo de lenguaje lo redacta
+						a partir de la tesis, y el gancho y la estructura rotan a propósito de una pieza a otra. La de Kodak
+						empieza por el final, en 2012, y rebobina hasta 1975.
+					</p>
+					<p>Casi todas cierran con «la jugada»: el concepto de ajedrez que resume la historia.</p>
+				</li>
+
+				<li>
+					<h2>La verificación</h2>
+					<p>
+						Antes de grabar nada, cada afirmación del guion va a una tabla con su fuente y un veredicto. Lo que no
+						se puede sostener se saca o se reescribe como opinión. La decisión final es de una persona.
+					</p>
+					<table>
+						<thead>
+							<tr><th>Lo que decía el guion</th><th>Veredicto</th></tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>La primera cámara digital la armó un ingeniero de Kodak en 1975</td>
+								<td><span class="si">Confirmado</span> con dos fuentes del IEEE</td>
+							</tr>
+							<tr>
+								<td>«Los usaron para proteger el rollo»</td>
+								<td><span class="ojo">Es tesis, no dato:</span> se narra como lectura propia</td>
+							</tr>
+							<tr>
+								<td>A Faker le ofrecieron un «cheque en blanco»</td>
+								<td><span class="no">Afuera:</span> era otra oferta, de otro año</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="chico">
+						Las filas confirmadas se publican con su fuente en la página de cada pieza, bajo «Datos verificados».
+					</p>
+				</li>
+
+				<li>
+					<h2>La voz y la música</h2>
+					<p>
+						Dos voces sintéticas, una femenina y una masculina, se alternan entre piezas. La música se compone a
+						medida para cada una, en un género distinto, y nunca se usa música con derechos de terceros. Todo se
+						lleva al mismo volumen antes de publicar.
+					</p>
+				</li>
+
+				<li class="ancho">
+					<h2>Las ilustraciones</h2>
+					<p>
+						Se generan en una notebook, sin servicios en la nube, con un modelo abierto. El estilo de base es el
+						grabado en sepia; para otros temas hay más de veinte estilos definidos. Cada imagen se revisa: si el
+						modelo inventó un cartel con texto falso, se reencuadra o se descarta.
+					</p>
+					<ul class="laminas">
+						{ilustraciones.map((ilustracion) => (
+							<li><Image src={ilustracion.src} alt={ilustracion.alt} width={300} /></li>
+						))}
+					</ul>
+					<p class="chico">Cuatro de las ilustraciones de la pieza de Kodak, tal como salieron.</p>
+				</li>
+
+				<li>
+					<h2>El armado</h2>
+					<p>
+						El video no se edita a mano: se escribe. Cada pieza es un archivo que dice qué imagen va en qué segundo,
+						con qué movimiento y qué cartel. Los subtítulos se sincronizan palabra por palabra con la narración, y
+						el tablero de «la jugada» se dibuja con el mismo código en todas.
+					</p>
+					<p>Antes de renderizar se revisa una hoja con los cuadros clave. Es la segunda aprobación humana.</p>
+				</li>
+
+				<li>
+					<h2>La publicación</h2>
+					<p>
+						Sale un archivo maestro para YouTube y X y otro sin música para TikTok. Esta web se genera desde las
+						mismas carpetas: cuando una pieza se publica, su página aparece con el video, el texto y las fuentes,
+						sin cargar nada a mano.
+					</p>
+				</li>
+			</ol>
+
+			<section class="reparto">
+				<h2>Quién hace qué</h2>
+				<div class="columnas">
+					{reparto.map((parte) => (
+						<div>
+							<h3>{parte.quien}</h3>
+							<ul>{parte.que.map((tarea) => <li>{tarea}</li>)}</ul>
+						</div>
+					))}
+				</div>
+				<p class="chico">
+					Todas las piezas se declaran como hechas con inteligencia artificial en cada plataforma.
+				</p>
+			</section>
+
+			<p class="contacto">
+				¿Querés armar algo parecido o tenés una idea para el canal? <a href={`mailto:${CONTACTO}`}>{CONTACTO}</a>
+			</p>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.apertura {
+		padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 4vw, 3rem);
+		max-width: 900px;
+	}
+	.rotulo {
+		color: var(--sepia);
+		margin: 0 0 1rem;
+	}
+	h1 {
+		font-weight: 900;
+		font-size: clamp(2.5rem, 6.4vw, 4.8rem);
+		line-height: 1;
+	}
+	h1 em {
+		font-weight: 700;
+		color: var(--atardecer);
+	}
+	.bajada {
+		font-size: clamp(1.12rem, 1.8vw, 1.32rem);
+		max-width: 62ch;
+		margin: 1.6rem 0 2rem;
+	}
+	.cifras {
+		list-style: none;
+		margin: 0;
+		padding: 1.2rem 0 0;
+		border-top: 3px solid var(--tinta);
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+		gap: 1.2rem 2rem;
+		font-size: 1rem;
+		color: var(--sepia);
+	}
+	.cifras strong {
+		display: block;
+		font-family: var(--titulos);
+		font-weight: 900;
+		font-size: 2.3rem;
+		line-height: 1.05;
+		color: var(--tinta);
+	}
+
+	/* Numbered stations: the numeral comes from a CSS counter */
+	.pasos {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		counter-reset: paso;
+	}
+	.pasos > li {
+		counter-increment: paso;
+		display: grid;
+		grid-template-columns: clamp(4rem, 12vw, 9rem) minmax(0, 62ch);
+		column-gap: clamp(1rem, 3vw, 2.5rem);
+		padding-block: clamp(2rem, 4.5vw, 3.2rem);
+		border-top: 1px solid var(--tinta);
+	}
+	.pasos > li::before {
+		content: counter(paso, decimal-leading-zero);
+		grid-row: 1 / span 20;
+		font-family: var(--titulos);
+		font-weight: 900;
+		font-style: italic;
+		font-size: clamp(3rem, 9vw, 6.5rem);
+		line-height: 0.85;
+		color: var(--atardecer);
+	}
+	.pasos > li > * {
+		grid-column: 2;
+	}
+	.pasos > li.ancho {
+		grid-template-columns: clamp(4rem, 12vw, 9rem) minmax(0, 1fr);
+	}
+	.pasos > li.ancho > p {
+		max-width: 62ch;
+	}
+	.pasos h2 {
+		font-weight: 900;
+		font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+		margin-bottom: 0.9rem;
+	}
+	.pasos p {
+		font-size: 1.18rem;
+		line-height: 1.6;
+	}
+	.chico {
+		font-size: 0.98rem !important;
+		font-style: italic;
+		color: var(--sepia);
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1.2rem 0 1rem;
+		background: var(--papel-claro);
+		border: 3px solid var(--tinta);
+		box-shadow: 8px 8px 0 var(--tinta);
+		font-size: 1rem;
+		line-height: 1.4;
+	}
+	th {
+		font-family: var(--rotulos);
+		font-weight: 800;
+		font-size: 0.68rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		text-align: left;
+		background: var(--tinta);
+		color: var(--papel);
+	}
+	th,
+	td {
+		padding: 0.75rem 0.9rem;
+		vertical-align: top;
+	}
+	tbody tr + tr td {
+		border-top: 1px dotted var(--sepia);
+	}
+	.si,
+	.ojo,
+	.no {
+		font-weight: 600;
+	}
+	.si {
+		color: #1f6b3a;
+	}
+	.ojo {
+		color: #8a5a00;
+	}
+	.no {
+		color: #a3271c;
+	}
+
+	.laminas {
+		list-style: none;
+		margin: 1.4rem 0 1rem;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.4rem;
+	}
+	.laminas :global(img) {
+		width: 100%;
+		aspect-ratio: 4 / 7;
+		object-fit: cover;
+		border: 4px solid var(--tinta);
+		box-shadow: 7px 7px 0 var(--tinta);
+	}
+	.laminas li:nth-child(odd) {
+		transform: rotate(-1.2deg);
+	}
+	.laminas li:nth-child(even) {
+		transform: rotate(1deg) translateY(0.6rem);
+	}
+
+	.reparto {
+		margin-top: clamp(1rem, 3vw, 2rem);
+		background: var(--tinta);
+		color: var(--papel);
+		padding: clamp(1.8rem, 4vw, 3rem);
+		box-shadow: 12px 12px 0 var(--dorado);
+	}
+	.reparto h2 {
+		font-weight: 900;
+		font-size: clamp(1.9rem, 4vw, 2.8rem);
+		margin-bottom: 1.6rem;
+	}
+	.columnas {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+		gap: 1.8rem 2.5rem;
+	}
+	.reparto h3 {
+		font-style: italic;
+		font-size: 1.45rem;
+		color: var(--dorado);
+		margin-bottom: 0.6rem;
+	}
+	.reparto ul {
+		margin: 0;
+		padding-left: 1.1rem;
+		font-size: 1.05rem;
+		line-height: 1.5;
+	}
+	.reparto li + li {
+		margin-top: 0.35rem;
+	}
+	.reparto .chico {
+		color: color-mix(in srgb, var(--papel) 70%, transparent);
+		margin: 1.8rem 0 0;
+	}
+
+	.contacto {
+		margin: clamp(3rem, 6vw, 4.5rem) 0 0;
+		font-family: var(--titulos);
+		font-size: clamp(1.3rem, 2.6vw, 1.8rem);
+		font-style: italic;
+		max-width: 30ch;
+	}
+
+	@media (max-width: 700px) {
+		.pasos > li,
+		.pasos > li.ancho {
+			grid-template-columns: 1fr;
+		}
+		.pasos > li::before {
+			grid-row: auto;
+			margin-bottom: 0.6rem;
+		}
+		.pasos > li > * {
+			grid-column: 1;
+		}
+		.laminas {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		table {
+			box-shadow: 5px 5px 0 var(--tinta);
+			font-size: 0.95rem;
+		}
+	}
+</style>
