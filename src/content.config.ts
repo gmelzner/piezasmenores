@@ -11,7 +11,7 @@ const piezas = defineCollection({
 			serie: z.string(),
 			portada: image(),
 			bajada: z.string(),
-			youtube: z.string().optional(),
+			youtube: z.string(),
 			jugada: z.object({ concepto: z.string(), definicion: z.string() }).optional(),
 			narracion: z.array(z.string()),
 		}),

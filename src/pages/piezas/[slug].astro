@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -38,17 +37,13 @@ const [gancho, ...resto] = narracion;
 
 				<div class="cuerpo">
 					<div class="video entra" style="--orden:2">
-						{youtube ? (
-							<iframe
-								src={`https://www.youtube-nocookie.com/embed/${youtube}`}
-								title={titulo}
-								loading="lazy"
-								allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
-								allowfullscreen
-							/>
-						) : (
-							<Image src={portada} alt={`Portada de la pieza: ${titulo}`} width={360} loading="eager" />
-						)}
+						<iframe
+							src={`https://www.youtube-nocookie.com/embed/${youtube}`}
+							title={titulo}
+							loading="lazy"
+							allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
+							allowfullscreen
+						/>
 					</div>
 
 					<div class="texto">
@@ -131,8 +126,7 @@ const [gancho, ...resto] = narracion;
 		position: sticky;
 		top: 1.5rem;
 	}
-	.video iframe,
-	.video :global(img) {
+	.video iframe {
 		display: block;
 		width: 100%;
 		aspect-ratio: 9 / 16;
@@ -249,8 +243,7 @@ const [gancho, ...resto] = narracion;
 			width: min(100%, 320px);
 			margin-inline: auto;
 		}
-		.video iframe,
-		.video :global(img) {
+		.video iframe {
 			box-shadow: 8px 8px 0 var(--tinta);
 		}
 		.otras {

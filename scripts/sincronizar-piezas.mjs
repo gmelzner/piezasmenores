@@ -5,13 +5,19 @@
 //   npm run sincronizar            (channel at ../../activos/piezas-menores)
 //   PIEZAS_CANAL=/ruta npm run sincronizar
 //
+// Only pieces whose stage is "publicada" in the channel's estado.json go to the
+// site: uploaded, with a YouTube id, and past their scheduled date. The script
+// refreshes that file first (herramientas/estado.py), so a scheduled piece
+// shows up the first time this runs after its release.
+//
 // Per piece it reads, from the channel:
-//   publicar/subidos/NN-slug/publicacion.md   title, series, description
+//   estado.json                               stage, title, series, YouTube id
+//   publicar/subidos/NN-slug/publicacion.md   description
 //   publicar/subidos/NN-slug/portada.jpg      cover
 //   pilotos/NN-slug/short-01/narracion*.txt   narration (latest version)
 //   pilotos/NN-slug/short-01/guion-short.md   "La jugada" and the verification table
-// and the YouTube id from src/data/youtube.json (filled by hand after uploading).
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,7 +35,9 @@ if (!existsSync(subidos)) {
 	process.exit(1);
 }
 
-const youtube = JSON.parse(await readFile(path.join(raiz, 'src', 'data', 'youtube.json'), 'utf8'));
+execFileSync('python3', [path.join(canal, 'herramientas', 'estado.py')], { stdio: 'ignore' });
+const estado = JSON.parse(await readFile(path.join(canal, 'estado.json'), 'utf8'));
+const publicadas = estado.piezas.filter((pieza) => pieza.etapa === 'publicada');
 
 const sinEmojis = (texto) => texto.replace(/\p{Extended_Pictographic}|️/gu, '').replace(/\s+/g, ' ').trim();
 const leerSiExiste = async (archivo) => (existsSync(archivo) ? readFile(archivo, 'utf8') : '');
@@ -81,38 +89,27 @@ function leerDatosVerificados(guion) {
 	return datos;
 }
 
-await mkdir(destinoContenido, { recursive: true });
-await mkdir(destinoPortadas, { recursive: true });
-
-const carpetas = (await readdir(subidos, { withFileTypes: true }))
-	.filter((entrada) => entrada.isDirectory() && /^\d+-/.test(entrada.name))
-	.map((entrada) => entrada.name)
-	.sort();
+// Both folders are generated: start clean so a piece that stops being public disappears.
+for (const destino of [destinoContenido, destinoPortadas]) {
+	await rm(destino, { recursive: true, force: true });
+	await mkdir(destino, { recursive: true });
+}
 
 let escritas = 0;
-const sinVideo = [];
-for (const carpeta of carpetas) {
+for (const { slug: carpeta, numero, titulo, serie, youtube } of publicadas) {
 	const archivoPublicacion = path.join(subidos, carpeta, 'publicacion.md');
 	const archivoPortada = path.join(subidos, carpeta, 'portada.jpg');
-	if (!existsSync(archivoPublicacion) || !existsSync(archivoPortada)) {
-		console.warn(`  salteo ${carpeta}: falta publicacion.md o portada.jpg`);
+	if (!titulo || !serie || !existsSync(archivoPortada)) {
+		console.warn(`  salteo ${carpeta}: falta título, serie o portada.jpg`);
 		continue;
 	}
-
 	const publicacion = await readFile(archivoPublicacion, 'utf8');
-	const titulo = publicacion.match(/^\*\*Título:\*\*\s*(.+)$/m)?.[1];
-	const serie = publicacion.match(/Serie:\s*(.+)$/m)?.[1];
-	if (!titulo || !serie) {
-		console.warn(`  salteo ${carpeta}: no pude leer título o serie`);
-		continue;
-	}
 
 	const carpetaShort = path.join(canal, 'pilotos', carpeta, 'short-01');
 	const guion = await leerSiExiste(path.join(carpetaShort, 'guion-short.md'));
 	const narracion = await leerNarracion(carpetaShort);
 	const jugada = leerJugada(guion);
 	const datos = leerDatosVerificados(guion);
-	if (!youtube[carpeta]) sinVideo.push(carpeta);
 
 	await sharp(archivoPortada)
 		.resize({ width: ANCHO_PORTADA })
@@ -121,12 +118,12 @@ for (const carpeta of carpetas) {
 
 	const frontmatter = [
 		'---',
-		`numero: ${Number(carpeta.split('-')[0])}`,
+		`numero: ${numero}`,
 		`titulo: ${JSON.stringify(sinEmojis(titulo))}`,
-		`serie: ${JSON.stringify(serie.trim())}`,
+		`serie: ${JSON.stringify(serie)}`,
 		`portada: ../../assets/piezas/${carpeta}.jpg`,
 		`bajada: ${JSON.stringify(leerBajada(publicacion))}`,
-		...(youtube[carpeta] ? [`youtube: ${JSON.stringify(youtube[carpeta])}`] : []),
+		`youtube: ${JSON.stringify(youtube)}`,
 		...(jugada ? ['jugada:', `  concepto: ${JSON.stringify(jugada.concepto)}`, `  definicion: ${JSON.stringify(jugada.definicion)}`] : []),
 		'narracion:',
 		...narracion.map((linea) => `  - ${JSON.stringify(linea)}`),
@@ -139,7 +136,8 @@ for (const carpeta of carpetas) {
 	escritas++;
 }
 
-console.log(`${escritas} piezas sincronizadas desde ${subidos}`);
-if (sinVideo.length > 0) {
-	console.log(`Sin video en src/data/youtube.json: ${sinVideo.join(', ')}`);
+console.log(`${escritas} piezas publicadas sincronizadas desde ${canal}`);
+const pendientes = estado.piezas.filter((pieza) => pieza.etapa === 'subida' || pieza.etapa === 'programada');
+if (pendientes.length > 0) {
+	console.log(`Todavía no salen en la web: ${pendientes.map((pieza) => `${pieza.slug} (${pieza.etapa})`).join(', ')}`);
 }
