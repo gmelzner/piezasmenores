@@ -4,4 +4,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://piezasmenores.blog/sitemap-index.xml
+Sitemap: https://www.piezasmenores.blog/sitemap-index.xml

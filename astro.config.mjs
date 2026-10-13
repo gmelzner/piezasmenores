@@ -6,7 +6,8 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://piezasmenores.blog',
+  // The domain's primary host is www: canonical URLs, Open Graph and the sitemap must match it.
+  site: 'https://www.piezasmenores.blog',
   integrations: [mdx(), sitemap()],
   // The site used to be a blog; its old URLs land on the home page.
   redirects: {

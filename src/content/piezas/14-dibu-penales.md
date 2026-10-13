@@ -5,6 +5,8 @@ serie: "Jugadas"
 portada: ../../assets/piezas/14-dibu-penales.jpg
 bajada: "Un penal entra unas tres de cada cuatro veces: el arquero casi no tiene chances. Por eso Dibu Martínez no juega contra la pelota, juega contra la cabeza del que patea. Demora, discute, tira la pelota lejos, habla. Cuatro definiciones por penales con la Selección Argentina (Colombia 2021, Países Bajos y Francia 2022, Ecuador 2024): ganó las cuatro, con ocho penales atajados. En 2023 el reglamento cambió: el arquero ya no puede demorar la ejecución ni distraer al pateador. La prensa la llamó \"la ley anti Dibu\"."
 youtube: "oQtnm7ooCwo"
+publicada: "2026-10-13T10:51:23-03:00"
+duracion: "PT55S"
 narracion:
   - "Final del mundo. Caminás solo desde la mitad de la cancha. Y en el arco te espera un tipo que no para de hablarte."
   - "Un penal entra tres de cada cuatro veces. El arquero casi no tiene chances. Por eso Dibu Martínez no juega contra la pelota: juega contra tu cabeza."

@@ -5,6 +5,8 @@ serie: "Jugadas"
 portada: ../../assets/piezas/32-josedeodo.jpg
 bajada: "Brandon «Josedeodo» Villegas, de Hurlingham, salió campeón de la LCS (la liga norteamericana de League of Legends) el 4 de octubre de 2026 con Team Liquid, que le ganó la final 3 a 1 a LYON en Duluth, Georgia. Fue elegido mejor jugador de la final. LYON venía de cinco títulos seguidos y le había ganado 3 a 0 la final anterior."
 youtube: "kiP28Q2Qodg"
+publicada: "2026-10-06T12:58:58-03:00"
+duracion: "PT1M6S"
 narracion:
   - "Un pibe de Hurlingham acaba de salir campeón de la liga norteamericana de League of Legends. Y para lograrlo tuvo que volver al lugar donde había fracasado."
   - "Se llama Brandon Villegas. Lo conocen como Josedeodo."

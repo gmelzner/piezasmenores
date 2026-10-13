@@ -125,7 +125,7 @@ const escribir = async (archivo, contenido) => {
 let escritas = 0;
 const notas = [];
 const notasSinVerificar = [];
-for (const { slug: carpeta, numero, titulo, serie, youtube } of publicadas) {
+for (const { slug: carpeta, numero, titulo, serie, youtube, publica, duracion } of publicadas) {
 	const archivoPublicacion = path.join(subidos, carpeta, 'publicacion.md');
 	const archivoPortada = path.join(subidos, carpeta, 'portada.jpg');
 	if (!titulo || !serie || !existsSync(archivoPortada)) {
@@ -154,6 +154,8 @@ for (const { slug: carpeta, numero, titulo, serie, youtube } of publicadas) {
 		`portada: ../../assets/piezas/${carpeta}.jpg`,
 		`bajada: ${JSON.stringify(leerBajada(publicacion))}`,
 		`youtube: ${JSON.stringify(youtube)}`,
+		...(publica ? [`publicada: ${JSON.stringify(publica)}`] : []),
+		...(duracion ? [`duracion: ${JSON.stringify(duracion)}`] : []),
 		...(jugada ? ['jugada:', `  concepto: ${JSON.stringify(jugada.concepto)}`, `  definicion: ${JSON.stringify(jugada.definicion)}`] : []),
 		'narracion:',
 		...narracion.map((linea) => `  - ${JSON.stringify(linea)}`),

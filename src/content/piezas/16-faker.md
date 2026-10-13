@@ -5,6 +5,8 @@ serie: "Jugadas"
 portada: ../../assets/piezas/16-faker.jpg
 bajada: "Faker debutó en 2013 y nunca cambió de equipo. Según Joe Marsh, CEO de T1, cada vez que quedaba libre llegaba una oferta desde China, de hasta 20 millones de dólares por año. Se quedó. Resultado: seis mundiales de League of Legends (2013, 2015, 2016, 2023, 2024 y 2025), los últimos tres seguidos. Ahora empieza otro Mundial."
 youtube: "TjybxRaGsgc"
+publicada: "2026-10-10T11:30:14-03:00"
+duracion: "PT53S"
 jugada:
   concepto: "Pieza bien ubicada"
   definicion: "no vale por lo que es, vale por dónde está."

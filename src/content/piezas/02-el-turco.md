@@ -5,6 +5,8 @@ serie: "Máquinas que juegan"
 portada: ../../assets/piezas/02-el-turco.jpg
 bajada: "En 1770, Wolfgang von Kempelen le presentó a la emperatriz María Teresa una máquina que jugaba al ajedrez y ganaba. Durante décadas asombró a Europa y América. El truco: adentro del mueble se escondía un ajedrecista de carne y hueso. En 2005, Amazon bautizó \"Mechanical Turk\" a su plataforma de microtareas humanas."
 youtube: "WVpYA5BUscs"
+publicada: "2026-10-02T00:00:03-03:00"
+duracion: "PT1M5S"
 narracion:
   - "La primera inteligencia artificial de la historia era un señor escondido en una caja."
   - "En 1770, en Viena, Wolfgang von Kempelen le presentó a la emperatriz María Teresa una máquina que jugaba al ajedrez: un muñeco vestido de turco, sentado frente a un tablero. Y ganaba."

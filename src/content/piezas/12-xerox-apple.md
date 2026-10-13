@@ -5,6 +5,8 @@ serie: "Jugadas"
 portada: ../../assets/piezas/12-xerox-apple.jpg
 bajada: "1973: en su laboratorio de Palo Alto, Xerox crea el Alto, con ventanas, mouse, red e impresora láser. Nunca lo vende. Diciembre de 1979: Steve Jobs entra al laboratorio con un trato: Xerox puede comprar acciones de Apple por un millón de dólares, y a cambio Apple mira. Xerox lanza su versión en 1981 a 16.595 dólares y casi nadie la compra. Apple la abarata: el mouse de Xerox costaba 300 dólares; Apple encarga uno de 15."
 youtube: "4GCeFR8uMsc"
+publicada: "2026-10-08T16:00:02-03:00"
+duracion: "PT56S"
 jugada:
   concepto: "Ceder la iniciativa"
   definicion: "tener la mejor posición y dejar que mueva el otro."

@@ -5,6 +5,8 @@ serie: "Jugadas"
 portada: ../../assets/piezas/13-taylor-swift.jpg
 bajada: "En 2019 un empresario compró su discográfica por más de 300 millones de dólares, y con ella las grabaciones originales de sus primeros seis discos. Ella no era dueña de esas grabaciones, pero sí de las canciones: las había escrito. Entonces las grabó de nuevo y pidió que se escuchara solo la versión nueva. La semana en que salió 1989 (Taylor's Version), las reproducciones del original cayeron más de la mitad. En 2025 terminó comprando las originales."
 youtube: "kAaLs9x0lC4"
+publicada: "2026-10-09T01:45:40-03:00"
+duracion: "PT57S"
 jugada:
   concepto: "Alfil malo"
   definicion: "una pieza que tenés, pero que no puede jugar."

@@ -5,6 +5,8 @@ serie: "Jugadas"
 portada: ../../assets/piezas/04-kodak.jpg
 bajada: "En 1975, Steven Sasson, ingeniero de Kodak, inventó la cámara digital. Según él, la respuesta de sus jefes fue \"qué lindo, pero no se lo cuentes a nadie\". En 1981 un estudio interno les avisó que lo digital reemplazaría al film y que tenían diez años. Los tuvieron. En enero de 2012, la empresa que inventó la cámara digital se presentó en quiebra."
 youtube: "leX7X0AS61I"
+publicada: "2026-10-01T12:48:22-03:00"
+duracion: "PT57S"
 jugada:
   concepto: "Materialismo"
   definicion: "aferrarte a lo que vale hoy y perder la partida."

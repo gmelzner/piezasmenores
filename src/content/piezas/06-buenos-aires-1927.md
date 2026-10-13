@@ -5,6 +5,8 @@ serie: "Tablero argentino"
 portada: ../../assets/piezas/06-buenos-aires-1927.jpg
 bajada: "29 de noviembre de 1927. Capablanca no vuelve a sentarse a terminar la partida: manda una carta en francés y abandona. Alekhine es el nuevo campeón del mundo. Capablanca llevaba ocho años sin perder una sola partida y Alekhine nunca le había ganado. Pero Alekhine llegó habiéndolo estudiado todo. 34 partidas en el Club Argentino de Ajedrez: ningún mundial fue tan largo hasta 1984. Y nunca hubo revancha."
 youtube: "4NB7Le5EPIE"
+publicada: "2026-10-11T03:00:23-03:00"
+duracion: "PT53S"
 jugada:
   concepto: "Preparación"
   definicion: "el talento gana partidas, el estudio gana campeonatos. (\"Profilaxis\" descartada: se asocia a Capablanca, no a Alekhine.)"

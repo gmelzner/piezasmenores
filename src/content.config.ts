@@ -12,6 +12,9 @@ const piezas = defineCollection({
 			portada: image(),
 			bajada: z.string(),
 			youtube: z.string(),
+			// Publish date and ISO 8601 duration of the video, for structured data
+			publicada: z.string().optional(),
+			duracion: z.string().optional(),
 			jugada: z.object({ concepto: z.string(), definicion: z.string() }).optional(),
 			narracion: z.array(z.string()),
 		}),

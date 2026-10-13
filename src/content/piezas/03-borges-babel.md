@@ -5,6 +5,8 @@ serie: "Libros que predijeron el presente"
 portada: ../../assets/piezas/03-borges-babel.jpg
 bajada: "En 1941, Jorge Luis Borges imaginó una biblioteca que contiene todos los libros posibles: cada verdad… y miles y miles de catálogos falsos. Sus bibliotecarios se pierden buscando el único libro que importa. Hoy la inteligencia artificial fabrica textos verosímiles sin fin. Borges no imaginó internet: imaginó lo difícil que iba a ser vivir adentro."
 youtube: "8Jz1X0_7YGw"
+publicada: "2026-10-04T00:00:31-03:00"
+duracion: "PT1M5S"
 narracion:
   - "En 1941, Borges imaginó internet."
   - "En La biblioteca de Babel, el universo es una biblioteca interminable de galerías hexagonales que contiene todos los libros posibles."

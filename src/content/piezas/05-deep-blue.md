@@ -5,6 +5,8 @@ serie: "Máquinas que juegan"
 portada: ../../assets/piezas/05-deep-blue.jpg
 bajada: "Nueva York, 1997. Garry Kasparov, campeón del mundo, juega la revancha contra Deep Blue. Abandona una partida que se podía salvar, insinúa que hay humanos ayudando a la máquina y en la última elige una apertura que la computadora tenía preparada. Veinte años después escribió que no hubo trampa."
 youtube: "nX3U_zbQwpE"
+publicada: "2026-10-07T00:00:14-03:00"
+duracion: "PT57S"
 jugada:
   concepto: "Abandono"
   definicion: "rendirte antes de que la partida esté perdida."

@@ -14,18 +14,33 @@ export async function getStaticPaths() {
 }
 
 const { pieza, anterior, siguiente } = Astro.props;
-const { numero, titulo, serie, portada, bajada, youtube, jugada, narracion } = pieza.data;
+const { numero, titulo, serie, portada, bajada, youtube, jugada, narracion, publicada, duracion } = pieza.data;
 const { Content } = await render(pieza);
 const tieneDatos = Boolean(pieza.body?.trim());
 const nota = await getEntry('notas', pieza.id);
 const Nota = nota ? (await render(nota)).Content : null;
 const [gancho, ...resto] = narracion;
+
+// Google needs name, thumbnail and upload date to treat the page as a video result.
+const datosDeVideo = publicada && {
+	'@context': 'https://schema.org',
+	'@type': 'VideoObject',
+	name: titulo,
+	description: bajada,
+	thumbnailUrl: new URL(portada.src, Astro.site).href,
+	uploadDate: publicada,
+	...(duracion && { duration: duracion }),
+	embedUrl: `https://www.youtube.com/embed/${youtube}`,
+	contentUrl: `https://www.youtube.com/shorts/${youtube}`,
+	inLanguage: 'es',
+};
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<BaseHead title={`${titulo} — ${SITE_TITLE}`} description={bajada} image={portada} />
+		{datosDeVideo && <script type="application/ld+json" set:html={JSON.stringify(datosDeVideo)} />}
 	</head>
 	<body>
 		<Header />

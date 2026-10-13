@@ -5,6 +5,8 @@ serie: "Máquinas que juegan"
 portada: ../../assets/piezas/10-turing.jpg
 bajada: "En 1950, Alan Turing publicó un paper que arrancaba con una pregunta: ¿pueden pensar las máquinas? En vez de responderla, propuso un juego: chatear a ciegas con una persona y una máquina y adivinar cuál es cuál. Predijo que íbamos a conversar con máquinas, que iban a aprender como un chico y que no íbamos a poder distinguirlas. En 2025, en un estudio de UC San Diego, la gente eligió a la máquina como humana tres de cada cuatro veces."
 youtube: "Z5dcZzULang"
+publicada: "2026-10-05T11:25:10-03:00"
+duracion: "PT1M1S"
 narracion:
   - "En 1950, un matemático inglés inventó la prueba que, según un estudio, una inteligencia artificial pasó en 2025."
   - "Se llamaba Alan Turing. Años antes había sido clave para descifrar Enigma."

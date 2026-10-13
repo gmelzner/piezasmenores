@@ -5,6 +5,8 @@ serie: "Libros que predijeron el presente"
 portada: ../../assets/piezas/11-orwell-huxley.jpg
 bajada: "Eton, 1917: Aldous Huxley le enseñaba francés a Eric Blair, el futuro George Orwell. Orwell imaginó un futuro de vigilancia: el Gran Hermano, pantallas en cada casa, el pasado reescrito. Huxley imaginó otro: gente feliz, entretenida, con una pastilla para cada angustia. En 1949 Huxley le escribió a su ex alumno: creo que el futuro se va a parecer más a mi libro. Neil Postman lo resumió en 1985: Orwell temía que prohibieran los libros; Huxley, que nadie quisiera leerlos."
 youtube: "jbBEp5ujVxI"
+publicada: "2026-10-06T08:15:25-03:00"
+duracion: "PT55S"
 narracion:
   - "El autor de Un mundo feliz le enseñó francés al autor de 1984."
   - "Eton, 1917. El profesor: Aldous Huxley. El alumno: Eric Blair, el futuro George Orwell."
