@@ -22,5 +22,5 @@ narracion:
 - Figura vestida de turco frente a un gabinete con tablero; ganaba la mayoría (perdió con Philidor) — *Wikipedia*
 - Recorrió Europa y América "durante décadas" (no 84 años de gira) — *Wikipedia*
 - Ajedrecista humano adentro, vela, movía el brazo (pantógrafo) — *Wikipedia, Jefferson Magazine*
-- Incendio en Filadelfia, 5/7/1854 (Chinese Museum) — *Jefferson Magazine*
-- Amazon Mechanical Turk, 2/11/2005, nombre alusivo; microtareas humanas (HITs) — *[Pew](https://www.pewresearch.org/internet/2016/07/11/what-is-mechanical-turk/), [IEEE Spectrum](https://spectrum.ieee.org/untold-history-of-ai-mechanical-turk-revisited-tktkt)*
+- Incendio en Filadelfia, 5/7/1854 — *Jefferson Magazine*
+- Amazon Mechanical Turk, 2005, nombre alusivo; microtareas humanas (HITs) — *[Pew](https://www.pewresearch.org/internet/2016/07/11/what-is-mechanical-turk/), [IEEE Spectrum](https://spectrum.ieee.org/untold-history-of-ai-mechanical-turk-revisited-tktkt)*

@@ -24,5 +24,4 @@ narracion:
 - La LLA se fusionó en la LTA en 2025 y no vuelve — *[Código Esports](https://codigoesports.com/lol-la-lla-no-volvera-a-existir/)*
 - Firmó con Team Liquid el 2/12/2025 (tenía 25) — *Esports Earnings*
 - Final LCS Summer 2026, 4/10/2026: Team Liquid 3-1 LYON; MVP de la final — *[AA Deporte](https://aadeporte.com.ar/2026/10/04/josedeodo-campeon-lcs-2026-team-liquid/) · [Wikipedia](https://en.wikipedia.org/wiki/2026_LCS_season)*
-- LYON venía de cinco títulos seguidos y le ganó 3-0 la final de Spring — *[RiftDaily](https://riftdaily.com/lcs-summer-2026/)*
 - Clasificado a Worlds 2026 como primer sembrado de Norteamérica — *Cultura Geek · RiftDaily*
